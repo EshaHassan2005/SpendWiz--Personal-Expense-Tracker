@@ -750,8 +750,18 @@ class ExpenseTrackerApp:
             if expenses>0:
                 suggestions.append("| ⚠️ No income recorded but expenses exist- add your income to get accurate suggestions.\n")
 
+        if income >0 and expenses > 0:
+            savings_rate=(income-expenses)/income*100
+            max_cat_percent=0
+            if category_totals:
+                max_category=max(category_totals, key=category_totals.get)
+                max_cat_percent=(category_totals[max_category]/expenses)*100
+
+            if savings_rate>=20 and max_cat_percent<=40 and expenses<income:
+                suggestions.append("| ✅ Great job! Your finances look healthy!!!\n")
+
         if not suggestions:
-            suggestions.append("| ✅ Great job! Your finances look healthy!!!\n")
+            suggestions.append("| ✅ All good - keep tracking your finances!\n")
 
         self.suggestion_label.config(text="".join(suggestions))
 
