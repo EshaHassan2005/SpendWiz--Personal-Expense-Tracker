@@ -65,12 +65,12 @@ SpendWiz/
 │   ├── Dashboard.png
 │   └── Settings.png
 ├── main.py                 # Main application file
-├── database.py             # Database management
-└── README.md               # Project documentation    
+├── README.md               # Project documentation 
+└── spendwiz.db             # SQLite database file (created upon first run)
 
 ```
 ---
-
+ 
 
 ## Screenshots
 
