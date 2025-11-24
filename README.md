@@ -56,17 +56,19 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
 
 
 ## Folder Structure
+
+```
 SpendWiz/
-│── images/                 # Contains all the images used in the application
+├── images/                 # Contains all the images used in the application
 │   ├── Login.png
 │   ├── Register.png
 │   ├── Dashboard.png
 │   └── Settings.png
-│── main.py                 # Main application file
-│── database.py             # Database management
-│── README.md               # Project documentation    
+├── main.py                 # Main application file
+├── database.py             # Database management
+└── README.md               # Project documentation    
 
-
+```
 ---
 
 
