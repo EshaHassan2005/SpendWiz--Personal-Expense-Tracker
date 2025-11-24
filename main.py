@@ -7,7 +7,7 @@ import hashlib
 from collections import defaultdict
 from tkinter.ttk import Treeview
 import random
-
+from tkinter import filedialog
 from unicodedata import category
 
 
@@ -24,6 +24,7 @@ class ExpenseTrackerApp:
 
     def init_database(self):
         self.conn= sqlite3.connect("spendwiz.db")
+        self.conn.execute("PRAGMA foreign_keys=ON")
         self.cursor=self.conn.cursor()
 
         self.cursor.execute('''
@@ -45,7 +46,7 @@ class ExpenseTrackerApp:
                 category TEXT NOT NULL,
                 amount REAL NOT NULL,
                 description TEXT,
-                date DATE NOT NULL,
+                date DATETIME NOT NULL,
                 FOREIGN KEY (user_id) REFERENCES users(id)
             )
         ''')
@@ -76,12 +77,12 @@ class ExpenseTrackerApp:
         # Username
         tk.Label(frame, text="Username", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(20,5))
         self.login_username= tk.Entry(frame,font=("Helvetica",14), width=30, bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        self.login_username.pack(anchor="w",pady=5)
+        self.login_username.pack(anchor="w",pady=5, ipady=5, ipadx=5)
 
         # Password
         tk.Label(frame,text="Password", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(10,5))
         self.login_password= tk.Entry(frame, font=("Helvetica",14), width=30, show="*", bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        self.login_password.pack(anchor="w",pady=5)
+        self.login_password.pack(anchor="w",pady=5, ipady=5, ipadx=5)
 
         # Forgot password
         forgot_btn= tk.Button(frame, text="Forgot Password?", font=("Helvetica",9),bg="#1a1a2e", fg="#00d9ff", bd=0, cursor="hand2", activebackground="#1a1a2e", activeforeground="#00d9ff", command=self.show_forgot_password)
@@ -110,17 +111,17 @@ class ExpenseTrackerApp:
         # Username
         tk.Label(frame, text="Username", font=("Helvetica", 12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(20, 5))
         self.reg_username = tk.Entry(frame, font=("Helvetica", 12), width=30, bg="#16213e", fg="#ffffff",insertbackground="#ffffff")
-        self.reg_username.pack(anchor="w", pady=5)
+        self.reg_username.pack(anchor="w", pady=5, ipady=5, ipadx=5)
 
         # Password
         tk.Label(frame, text="Password", font=("Helvetica", 12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(10, 5))
         self.reg_password = tk.Entry(frame, font=("Helvetica", 12), width=30, show="*", bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        self.reg_password.pack(anchor="w", pady=5)
+        self.reg_password.pack(anchor="w", pady=5, ipady=5, ipadx=5)
 
         # Confirm Password
         tk.Label(frame, text="Confirm Password", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(10, 5))
         self.reg_confirm = tk.Entry(frame, font=("Helvetica",12), width=30, show="*", bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        self.reg_confirm.pack(anchor="w", pady=5)
+        self.reg_confirm.pack(anchor="w", pady=5, ipady=5, ipadx=5)
 
         # Security Question
         tk.Label(frame, text="Security Question", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(10, 5))
@@ -136,7 +137,7 @@ class ExpenseTrackerApp:
         # Security Answer
         tk.Label(frame, text="Security Answer", font=("Helvetica", 12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(10, 5))
         self.reg_sec_answer= tk.Entry(frame, font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff", insertbackground="#ffffff")
-        self.reg_sec_answer.pack(pady=5)
+        self.reg_sec_answer.pack(pady=5, ipady=5, ipadx=5)
 
         # Buttons
         btn_frame= tk.Frame(frame, bg="#1a1a2e")
@@ -163,7 +164,7 @@ class ExpenseTrackerApp:
         # Username
         tk.Label(frame, text="Username", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(20, 5))
         self.forgot_username= tk.Entry(frame, font=("Helvetica",14), width=30, bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        self.forgot_username.pack(pady=5)
+        self.forgot_username.pack(pady=5, ipady=5, ipadx=5)
 
         # Verify Button
         verify_btn= tk.Button(frame, text="Verify Account", font=("Helvetica",12,"bold"), bg="#00d9ff", fg="#1a1a2e", width=25, cursor="hand2", command=self.verify_security_question)
@@ -206,7 +207,7 @@ class ExpenseTrackerApp:
 
         tk.Label(frame, text="Your Answer", font=("Helvetica",12),bg="#1a1a2e", fg="#ffffff").pack(anchor="w", pady=(10,5))
         answer_entry=tk.Entry(frame,font=("Helvetica",12), width=30, bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        answer_entry.pack(pady=5)
+        answer_entry.pack(pady=5, ipady=5, ipadx=5)
 
         def check_answer():
             if answer_entry.get().strip().lower()==sec_answer.lower():
@@ -234,12 +235,12 @@ class ExpenseTrackerApp:
         # New Password
         tk.Label(frame, text="New Password", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w",pady=(20,5))
         new_pass= tk.Entry(frame, font=("Helvetica",12), width=30, show="*", bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        new_pass.pack(pady=5)
+        new_pass.pack(pady=5, ipady=5, ipadx=5)
 
         # Confirm Password
         tk.Label(frame, text="Confirm New Password", font=("Helvetica",12), bg="#1a1a2e", fg="#ffffff").pack(anchor="w", pady=(10,5))
         confirm_pass= tk.Entry(frame, font=("Helvetica",12), width=30, show="*", bg="#16213e", fg="#ffffff", insertbackground="#ffffff")
-        confirm_pass.pack(pady=5)
+        confirm_pass.pack(pady=5, ipady=5, ipadx=5)
         def reset_password():
             new_password=new_pass.get()
             confirm_password= confirm_pass.get()
@@ -261,6 +262,9 @@ class ExpenseTrackerApp:
 
         reset_btn= tk.Button(frame, text= "Reset Password", font=("Helvetica",12,"bold"),bg="#00d9ff", fg="#1a1a2e", width=25, cursor="hand2", command=reset_password)
         reset_btn.pack(pady=30)
+        back_btn = tk.Button(frame, text="Back", font=("Helvetica", 11), bg="#0f3460", fg="#ffffff", width=25,
+                             cursor="hand2", command=self.show_login_page)
+        back_btn.pack(pady=10)
 
 
     def login(self):
@@ -325,8 +329,14 @@ class ExpenseTrackerApp:
         btn_frame= tk.Frame(top_bar, bg="#0f3460")
         btn_frame.pack(side="right", padx=20)
 
+        refresh_btn = tk.Button(btn_frame, text="🔃 Refresh", font=("Helvetica", 10), bg="#16213e", fg="#ffffff",cursor="hand2", command=self.refresh_dashboard)
+        refresh_btn.pack(side="left", padx=5)
+
         settings_btn= tk.Button(btn_frame, text="⚙️ Settings", font=("Helvetica",10), bg="#16213e",fg="#ffffff",cursor="hand2",command=self.show_settings)
         settings_btn.pack(side="left", padx=5)
+
+        report_btn=tk.Button(btn_frame,text="📄 Reports", font=("Helvetica",10), bg="#16213e",fg="#ffffff",cursor="hand2",command=self.show_reports)
+        report_btn.pack(side="left", padx=5)
 
         logout_btn= tk.Button(btn_frame, text="Logout", font=("Helvetica",10), bg="#e94560", fg="#ffffff", cursor="hand2",command=self.logout)
         logout_btn.pack(side="left", padx=5)
@@ -355,12 +365,12 @@ class ExpenseTrackerApp:
         # Amount
         tk.Label(left_panel, text="Amount", font=("Helvetica",10), bg="#16213e", fg="#ffffff").pack(anchor="w",padx=20, pady=(10,5))
         self.trans_amount=tk.Entry(left_panel, font=("Helvetica",12), width=27, bg="#1a1a2e", fg="#ffffff", insertbackground="#ffffff")
-        self.trans_amount.pack(padx=20)
+        self.trans_amount.pack(padx=20, ipady=5, ipadx=5)
 
         # Description
         tk.Label(left_panel, text="Description", font=("Helvetica",10),bg="#16213e", fg="#ffffff").pack(anchor="w", padx=20, pady=(10,5))
         self.trans_desc= tk.Entry(left_panel, font=("Helvetica",12), width=27, bg="#1a1a2e", fg="#ffffff", insertbackground="#ffffff")
-        self.trans_desc.pack(padx=20)
+        self.trans_desc.pack(padx=20, ipady=5, ipadx=5)
 
 
         # Add button
@@ -388,17 +398,25 @@ class ExpenseTrackerApp:
         chart_frame.pack(fill="both", expand=True, pady=(0,10))
 
         tk.Label(chart_frame, text="📊 Expense Breakdown", font=("Helvetica",14,"bold"),bg="#16213e", fg="#00d9ff").pack(pady=10)
-        self.chart_canvas=tk.Canvas(chart_frame, bg="#16213e", width=400, height=250, highlightthickness=0)
+        self.chart_canvas=tk.Canvas(chart_frame, bg="#16213e", width=550, height=250, highlightthickness=0)
         self.chart_canvas.pack(pady=10)
 
         # Transaction List
         list_frame= tk.Frame(right_panel, bg="#16213e")
         list_frame.pack(fill="both", expand=True)
 
-        tk.Label(list_frame, text="Recent Transactions", font=("Helvetica",14,"bold"), bg="#16213e", fg="#00d9ff").pack(pady=10)
+        header_frame= tk.Frame(list_frame, bg="#16213e")
+        header_frame.pack(fill="x", padx=10, pady=(10,0))
+
+        tk.Label(header_frame, text="Recent Transactions", font=("Helvetica",14,"bold"), bg="#16213e", fg="#00d9ff").pack(side="top")
+
+        # Deleted selected button
+        del_btn = tk.Button(header_frame, text="Deleted Selected Transaction", font=("Helvetica", 11, "bold"),
+                            bg="#e94560", fg="#ffffff", cursor="hand2", command=self.delete_selected_transaction)
+        del_btn.pack(side="right", pady=(10,0))
 
         # Treeview
-        columns= ("Date","Type","Category","Amount","Description")
+        columns= ("Time","Type","Category","Amount","Description")
         self.tree= ttk.Treeview(list_frame, columns=columns, show="headings", height=8)
 
         for col in columns:
@@ -408,8 +426,9 @@ class ExpenseTrackerApp:
         scrollbar= ttk.Scrollbar(list_frame, orient="vertical", command=self.tree.yview)
         self.tree.configure(yscrollcommand=scrollbar.set)
 
-        self.tree.pack(side="left", fill="both", expand=True, padx=10, pady=10)
+        self.tree.pack(side="left", fill="both", expand=True, padx=10, pady=(0,10))
         scrollbar.pack(side="right", fill="y", pady=10)
+
 
         # Suggestion
         sugg_frame= tk.Frame(left_panel, bg="#16213e", height=100)
@@ -420,6 +439,118 @@ class ExpenseTrackerApp:
         self.suggestion_label.pack(padx=20, pady=5)
 
         self.refresh_dashboard()
+
+
+    def delete_selected_transaction(self):
+        selected= self.tree.selection()
+        if not selected:
+            messagebox.showerror("Error", "Please select a transaction to delete.")
+            return
+
+        trans_id=int(selected[0])
+        confirm= messagebox.askyesno("Confirm", "Are you sure you want to delete this transaction?")
+        if not confirm:
+            return
+
+        self.cursor.execute("DELETE FROM transactions WHERE id=? and user_id=?",(trans_id,self.current_user))
+        self.conn.commit()
+        messagebox.showinfo("Success", "Transaction has been deleted successfully!")
+        self.refresh_dashboard()
+
+
+    def show_reports(self):
+        self.clear_window()
+        frame= tk.Frame(self.root, bg="#1a1a2e")
+        frame.pack(fill="both", expand=True, padx=20, pady=20)
+
+        tk.Label(frame, text="Monthly Reports", font=("Helvetica", 24, "bold"),bg="#1a1a2e", fg="#00d9ff").pack(pady=20)
+
+        two_years_ago= (datetime.now() - timedelta(days=365*2)).strftime("%Y-%m-%d %H:%M:%S")
+        self.cursor.execute('''
+            SELECT type, amount, strftime('%Y-%m', date) as month FROM transactions
+            WHERE user_id = ? AND date>=? ORDER BY date DESC
+        ''', (self.current_user,two_years_ago))
+
+        data= self.cursor.fetchall()
+
+        reports= defaultdict(lambda: {"Income": 0, "Expense": 0})
+        for t_type, amount, month in data:
+            reports[month][t_type] += amount
+
+        sorted_months= sorted(reports.keys())
+
+
+        tree_frame= tk.Frame(frame, bg="#1a1a2e")
+        tree_frame.pack(fill="both", expand=True,pady=10)
+
+        columns= ("Month", "Income", "Expense", "Balance", "Savings Rate")
+        tree= ttk.Treeview(tree_frame, columns=columns, show="headings", height=15)
+        for col in columns:
+            tree.heading(col, text=col)
+            tree.column(col,anchor="center", width=150)
+
+        tree.pack(fill="both", expand=True)
+
+        for month in sorted_months:
+            income = reports[month]["Income"]
+            expense = reports[month]["Expense"]
+            balance = income - expense
+
+            if income > 0:
+                savings_rate=(balance/income)*100
+                savings_rate_str=f"{savings_rate:.2f}%"
+
+            else:
+                savings_rate=0
+                savings_rate_str="N/A"
+
+            if savings_rate >= 20:
+                tree.insert('', 'end', values=(month, f"৳{income:.2f}", f"৳{expense:.2f}", f"৳{balance:.2f}", savings_rate_str), tags=('Excellent',))
+            elif savings_rate >= 10:
+                tree.insert('', 'end', values=(month, f"৳{income:.2f}", f"৳{expense:.2f}", f"৳{balance:.2f}", savings_rate_str), tags=('Good',))
+            elif savings_rate >= 0:
+                tree.insert('', 'end', values=(month, f"৳{income:.2f}", f"৳{expense:.2f}", f"৳{balance:.2f}", savings_rate_str), tags=('Fair',))
+            else:
+                tree.insert('', 'end', values=(month, f"৳{income:.2f}", f"৳{expense:.2f}", f"৳{balance:.2f}", savings_rate_str), tags=('Negative',))
+
+
+        tree.tag_configure('Excellent', background="#aed6b7")
+        tree.tag_configure('Good', background="#fff3cd")
+        tree.tag_configure('Fair', background="#d1ecf1")
+        tree.tag_configure('Negative', background="#eba7ad")
+
+        def export_txt():
+            file_path= filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text File", "*.txt")])
+
+            if not file_path:
+                return
+
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write("SpendWiz - Monthly Report\n")
+                f.write("="*60+"\n\n")
+                for month in sorted_months:
+                    income = reports[month]["Income"]
+                    expense = reports[month]["Expense"]
+                    balance = income - expense
+
+                    if income > 0:
+                        savings_rate=(balance/income)*100
+                        savings_rate_str=f"{savings_rate:.2f}%"
+                    else:
+                        savings_rate=0
+                        savings_rate_str="N/A"
+
+                    f.write(f"Month: {month}\n")
+                    f.write(f"Income: ৳{income:.2f}\n")
+                    f.write(f"Expenses: ৳{expense:.2f}\n")
+                    f.write(f"Balance: ৳{balance:.2f}\n")
+                    f.write(f"Savings Rate: {savings_rate_str}\n")
+                    f.write("-" * 60 + "\n")
+
+            messagebox.showinfo("Exported",f"Report saved to {file_path}")
+
+        tk.Button(frame, text="Export file", font=("Helvetica",12,"bold"), bg="#00d9ff", fg="#1a1a2e", width=20, cursor="hand2", command=export_txt).pack(pady=10)
+        tk.Button(frame, text="Back to Dashboard", font=("Helvetica",12), bg="#0f3460", fg="#ffffff", width=20, cursor="hand2", command=self.show_dashboard).pack(pady=10)
 
 
     def show_settings(self):
@@ -449,15 +580,15 @@ class ExpenseTrackerApp:
         tk.Label(frame, text="Change Password", font=("Helvetica",14,"bold"), bg="#16213e", fg="#00d9ff").pack(pady=10)
         tk.Label(frame, text="Current Password", font=("Helvetica",10),bg="#16213e", fg="#ffffff").pack(anchor="w", padx=20, pady=(5,2))
         current_pass= tk.Entry(frame, font=("Helvetica",11), width=25, show="*", bg="#1a1a2e", fg="#ffffff",insertbackground="#ffffff")
-        current_pass.pack(padx=20,pady=5)
+        current_pass.pack(padx=20,pady=5, ipady=5, ipadx=5)
 
         tk.Label(frame, text="New Password", font=("Helvetica",10),bg="#16213e", fg="#ffffff").pack(anchor="w", padx=20, pady=(5,2))
         new_pass= tk.Entry(frame, font=("Helvetica",11), width=25, show="*", bg="#1a1a2e", fg="#ffffff",insertbackground="#ffffff")
-        new_pass.pack(padx=20,pady=5)
+        new_pass.pack(padx=20,pady=5, ipady=5, ipadx=5)
 
         tk.Label(frame, text="Confirm New Password", font=("Helvetica",10),bg="#16213e", fg="#ffffff").pack(anchor="w", padx=20, pady=(5,2))
         confirm_pass= tk.Entry(frame, font=("Helvetica",11), width=25, show="*", bg="#1a1a2e", fg="#ffffff",insertbackground="#ffffff")
-        confirm_pass.pack(padx=20,pady=5)
+        confirm_pass.pack(padx=20,pady=5, ipady=5, ipadx=5)
 
         def change_password():
             current=current_pass.get()
@@ -558,7 +689,7 @@ class ExpenseTrackerApp:
         sorted_data=dict(sorted(data.items(), key=lambda item: item[1], reverse=True))
 
         start_angle=0
-        center_x, center_y= 180, 125
+        center_x, center_y= 150, 125
         radius=85
 
         shadow_offset= 3
@@ -613,12 +744,12 @@ class ExpenseTrackerApp:
             self.chart_canvas.create_text(center_x, center_y+10,text=f"৳{total:.0f}", font=("Helvetica",12,"bold"),fill="#00d9ff")
 
 
-        legend_x=300
+        legend_x=280
         legend_y=20
 
         for i,(category, amount) in enumerate(sorted_data.items()):
             colour=colours.get(category, "#C7CEEA")
-            y_pos=legend_y+i*50
+            y_pos=legend_y+i*40
 
             self.chart_canvas.create_rectangle(legend_x,y_pos,
                                                legend_x+18,y_pos+18,
@@ -652,7 +783,7 @@ class ExpenseTrackerApp:
             messagebox.showerror("Error", "Please enter a valid positive number")
             return
 
-        date= datetime.now().strftime("%m/%d/%Y")
+        date= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         self.cursor.execute('''
             INSERT INTO transactions (user_id, type, category, amount, description, date)
@@ -671,7 +802,7 @@ class ExpenseTrackerApp:
 
     def refresh_dashboard(self):
         self.cursor.execute('''
-            SELECT date, type, category, amount, description
+            SELECT id, date, type, category, amount, description
             FROM transactions
             WHERE user_id = ?
             ORDER BY date DESC, id DESC
@@ -688,19 +819,19 @@ class ExpenseTrackerApp:
         category_expenses=defaultdict(float)
 
         for trans in transactions:
-            date, trans_type, category, amount, desc=trans
+            trans_id, date, trans_type, category, amount, desc=trans
             try:
                 amount=float(amount)
             except (TypeError, ValueError):
                 amount=0.0
             if trans_type=="Income":
                 total_income+=amount
-                self.tree.insert("","end",values=(date,trans_type,category,f"৳{amount:.2f}",desc),tags=("income",))
+                self.tree.insert("","end",values=(date,trans_type,category,f"৳{amount:.2f}",desc),tags=("income",), iid=str(trans_id))
 
             else:
                 total_expenses += amount
                 category_expenses[category] += amount
-                self.tree.insert("","end",values=(date,trans_type,category,f"৳{amount:.2f}",desc),tags=("expense",))
+                self.tree.insert("","end",values=(date,trans_type,category,f"৳{amount:.2f}",desc),tags=("expense",),iid=str(trans_id))
 
 
         self.tree.tag_configure("income", background="#d4edda")
@@ -727,17 +858,17 @@ class ExpenseTrackerApp:
 
         category_totals= defaultdict(float)
         for trans in transactions:
-            if trans[1]=="Expense":
+            if str(trans[2]).strip().lower()=="expense":
                 try:
-                    amount=float(trans[3])
+                    amount=float(trans[4])
                 except (TypeError, ValueError):
                     amount=0.0
-                category_totals[trans[2]]+=amount
+                category_totals[trans[3]]+=amount
 
 
         if category_totals and expenses>0:
             max_category=max(category_totals, key=category_totals.get)
-            if category_totals[max_category]>expenses*0.4:
+            if ((category_totals[max_category])/expenses)*100>40:
                 suggestions.append(f"| 📊 {max_category} is {category_totals[max_category]/expenses*100:.1f}% of your expenses. Consider budgeting for it.\n")
 
 

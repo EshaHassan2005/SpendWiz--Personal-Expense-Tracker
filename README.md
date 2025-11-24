@@ -11,10 +11,12 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
 
 - **User Authentication:** Secure login and signup system for personalized tracking.
 - **Add Transactions:** Easily record income and expenses with categories, descriptions and dates.
+- **Delete Specific Transactions:** Option to delete individual transactions for better management.
 - **Smart Suggestions:** Get intelligent insights and suggestions to optimize your spending habits.
+- **Report Generation:** Generate and export monthly reports of your financial activities.
 - **Visual Summary:** View your spending trends at a glance.
-- **Delete Account Option:** Manage your account conveniently from the settings. 
-- **Local Data Storage:** All your data is safely stored on your device using SQLite; no external server required.
+- **Delete Account Option:** Manage your account conveniently from the settings.
+- **Local Data Storage:** All your data is safely stored on your device using SQLite (no external server required).
 
 
 ---
@@ -48,6 +50,21 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
     ```
 6. Follow the on-screen instructions to sign up or log in and start tracking your expenses!
 7. Enjoy managing your finances with SpendWiz!
+
+
+---
+
+
+## Folder Structure
+SpendWiz/
+│── images/                 # Contains all the images used in the application
+│   ├── Login.png
+│   ├── Register.png
+│   ├── Dashboard.png
+│   └── Settings.png
+│── main.py                 # Main application file
+│── database.py             # Database management
+│── README.md               # Project documentation    
 
 
 ---
