@@ -34,6 +34,7 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
 
 
 ## How to Run the Application
+
 1. Ensure you have Python installed on your machine. You can download it from [python.org](https://www.python.org/).
 2. Clone this repository to your local machine using:
 3. ```bash
@@ -55,7 +56,7 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
 ---
 
 
-## Folder Structure
+## Project Structure
 
 ```
 SpendWiz/
@@ -75,12 +76,14 @@ SpendWiz/
 ## Screenshots
 
 ### Login and Register Page
+
 <div align="center">
     <img src="images/Login.png" width="400" />
     <img src="images/Register.png" width="400" />
 </div>
 
 ### Dashboard and Settings Page
+
 <div align="center">
     <img src="images/Dashboard.png" width="400" />
     <img src="images/Settings.png" width="400" />
