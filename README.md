@@ -60,7 +60,7 @@ SpendWiz is an intuitive and user-friendly expense tracker designed to help you 
 
 ```
 SpendWiz/
-├── images/                 # Contains all the images used in the application
+├── images/                # Folder containing application screenshots
 │   ├── Login.png
 │   ├── Register.png
 │   ├── Dashboard.png
